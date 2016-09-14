@@ -1,0 +1,13 @@
+{
+  "MODULES": [
+    {"MODULENAME": "LogViewer"},
+    {"MODULENAME": "Proxy"},
+    {"MODULENAME": "History"},
+    {"MODULENAME": "ScapyModule"},
+    {"MODULENAME": "PCEFT_injector"}
+  ],
+  "LOGGING_LEVEL": "info",
+  "FILE_HISTORY": [],
+  "INITIAL_DIR": "\\",
+  "INITIAL_FILE": "test.bin"
+}
