@@ -66,7 +66,7 @@ def read_card(pirate):
   pirate.send("\n")
   pirate.expect("2WIRE>")
 
-  pirate.sendln("{0x30 0 0xff}\ r:255 r:10")
+  pirate.sendln("{0x30 0 0xff}\ r:256 r:10")
 
   # ignore lines before the data output
   for i in range(10):
@@ -74,7 +74,7 @@ def read_card(pirate):
     if len(data) > 250:
       break
 
-  hex_string = data.split()[1:256]
+  hex_string = data.split()[1:257]
 
   pirate.iostream.readline()
   return hex_string
@@ -85,6 +85,30 @@ def hex_to_bytes(hex_str):
     output += chr(int(group[-2:], 16))
   return output
 
+
+def update_card(pirate, address, data):
+    # Instruction: 0x38 <address> <data>
+    raise NotImplemented()
+
+def read_protection_memory(pirate):
+    # 0x34 0 0
+    raise NotImplemented()
+
+def write_protection_memory(pirate, address, data):
+    # 0x3c <address> <data>
+    raise NotImplemented()
+
+def read_security_memory():
+    # 0x31 0 0
+    raise NotImplemented()
+
+def update_security_memory():
+    # 0x39 <address> <data>
+    raise NotImplemented()
+
+def compare_verification_data():
+    # 0x33 <address> <data>
+    raise NotImplemented()
 
 def get_device():
   ser = serial.Serial(device, 115200, timeout=1)

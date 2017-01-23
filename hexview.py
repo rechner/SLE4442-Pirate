@@ -42,9 +42,13 @@ class HexViewControl(object):
 
     def on_load_dataset(self, event):
         self.view.set_data(event.data["dataset"])
+        self.view.add_tag(6, 14, SELECT_HEX, "green_underline")
 
     def on_update_dataset(self, event):
         self.view.redraw()
+
+    def clear_data(self):
+        self.view.clear_data()
 
 
 class HexViewer(Frame):
@@ -77,6 +81,7 @@ class HexViewer(Frame):
         self.hex_text.delete("0.0", END)
         self.hex_text.tag_config("selected", background="light blue", underline=1)
         self.hex_text.tag_config("shadowed", background="red")
+        self.hex_text.tag_config("green_underline", background="light green", underline=1)
         self.hex_text.tag_config("hover", background="gray")
 
         self.ascii_text.delete("0.0", END)
@@ -446,7 +451,7 @@ class HexText(Text):
 
         col, row = self.offset_to_coord(offset)
         index = "%d.%d" % (row, col)  # row column weird tkinter
-        self.tag_add(tag, index, index + " + 2 chars")
+        self.tag_add(tag, index, index + " + {0} chars".format(2*length))
 
     def on_mouseclick(self, event):
         # offset, type = self.coord_to_offset(event.x, event.y)

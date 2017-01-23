@@ -23,6 +23,9 @@ class ASCIIViewControl(object):
     def on_update_dataset(self, event):
         self.view.redraw()
 
+    def clear_data(self):
+        self.view.clear_data()
+
 
 class ASCIIViewer(Frame):
     """ Show a data string as ascii.. like notepad

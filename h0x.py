@@ -23,10 +23,12 @@ class App():
         configManager.load_config()
         self.modules = []  # A list of all currently loaded modules
         self.dataset = None  # This is the currently loaded dataset
+        self.hex_data = None
 
         self.view = H0xView()
 
         dispatcher.add_event_listener("CONTROL_EXIT", self.quit)
+        dispatcher.add_event_listener("CONTROL_NEW", self.new)
         dispatcher.add_event_listener("CONTROL_SAVEAS", self.saveas)
         #dispatcher.add_event_listener("CONTROL_SAVE", self.open)
         dispatcher.add_event_listener("CONTROL_OPEN", self.open)
@@ -40,6 +42,7 @@ class App():
         dispatcher.add_event_listener("CONTROL_ABOUT", self.open)
         dispatcher.add_event_listener("READ_CARD", self.read_card)
         dispatcher.add_event_listener("READ_ATR", self.read_ATR)
+        dispatcher.add_event_listener("LOG_WRITE", self.write_log)
         #self.root.resizable(True, False)
 
         #self.tabControl = ttk.Notebook(self.root)
@@ -58,10 +61,10 @@ class App():
 
 
         # Initialise hexviewer
-        hvc = HexViewControl(self)
-        hvc.initialise()
-        avc = ASCIIViewControl(self)
-        avc.initialise()
+        self.hvc = HexViewControl(self)
+        self.hvc.initialise()
+        self.avc = ASCIIViewControl(self)
+        self.avc.initialise()
 
 
         self.update_clock()
@@ -80,6 +83,12 @@ class App():
         #for module in self.modules:
         #    module.update()
 
+    def new(self, event):
+        self.hvc.clear_data()
+        self.avc.clear_data()
+        self.dataset = None
+        self.hex_data = None
+
     def quit(self, *args):
         self.pirate.iostream.close()
         sys.exit()
@@ -90,6 +99,7 @@ class App():
 
     def read_card(self, event):
         hex_data = readcard.read_card(self.pirate)
+        self.hex_data = hex_data
         byte_data = readcard.hex_to_bytes(hex_data)
 
         print(hex_data)
@@ -102,6 +112,15 @@ class App():
 
         evt = DEvent("LOAD_DATASET", {"dataset": self.dataset})
         dispatcher.dispatch_event(evt)
+
+    def write_log(self, event):
+        if self.hex_data is None:
+            tkMessageBox.showerror("Error", "No card data loaded yet")
+            return
+
+        with open('card_data.csv', 'a') as f:
+            f.write("{0},{1}\n".format(event.data['value'], ','.join(self.hex_data[7:16])))
+
 
 
     def open(self, event):

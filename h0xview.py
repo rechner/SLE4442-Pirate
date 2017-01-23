@@ -4,7 +4,7 @@ import sys
 import Tkinter
 import ttk
 import tkFileDialog
-import tkMessageBox
+import tkSimpleDialog
 
 #from Module.LogViewer.LogView import *
 #from TKGui.HexViewer import *
@@ -64,6 +64,13 @@ class H0xView(object):
             return
 
         evt = DEvent("CONTROL_SAVEAS", {"filename":filename})
+        dispatcher.dispatch_event(evt)
+
+    def on_log_write(self):
+        dollar_value = tkSimpleDialog.askfloat("Save card value", "Enter dollar value for this card", minvalue=0)
+        if dollar_value is None:
+            return
+        evt = DEvent("LOG_WRITE", {"value":dollar_value})
         dispatcher.dispatch_event(evt)
 
     def on_exit(self):
@@ -133,6 +140,8 @@ class H0xView(object):
         filemenu.add_command(label="Open", command=self.on_open)
         filemenu.add_command(label="Save", command=self.on_save)
         filemenu.add_command(label="Save as", command=self.on_saveas)
+        filemenu.add_separator()
+        filemenu.add_command(label="Write to Card Log", command=self.on_log_write)
         filemenu.add_separator()
         filemenu.add_command(label="Exit", command=self.on_exit)
 
