@@ -4,6 +4,7 @@ import sys
 import Tkinter
 import ttk
 import tkFileDialog
+import tkMessageBox
 
 #from Module.LogViewer.LogView import *
 #from TKGui.HexViewer import *
@@ -43,6 +44,10 @@ class H0xView(object):
 
     def on_save(self):
         pass
+
+    def on_read_ATR(self):
+        evt = DEvent("READ_ATR", {})
+        dispatcher.dispatch_event(evt)
 
     def on_saveas(self):
         file_opt = options = {}
@@ -101,8 +106,8 @@ class H0xView(object):
         evt = DEvent("CONTROL_SELECTALL", {})
         dispatcher.dispatch_event(evt)
 
-    def on_preferences(self):
-        evt = DEvent("CONTROL_PREFERENCES", {})
+    def on_read_card(self):
+        evt = DEvent("READ_CARD", {})
         dispatcher.dispatch_event(evt)
 
     def on_excellence(self):
@@ -149,8 +154,9 @@ class H0xView(object):
 
         #  Options Menu -------- --------
         optionmenu = Tkinter.Menu(menu)
-        menu.add_cascade(label="Options", menu=optionmenu)
-        optionmenu.add_command(label="Preferences", command=self.on_preferences)
+        menu.add_cascade(label="Card Actions", menu=optionmenu)
+        optionmenu.add_command(label="Get ATR", command=self.on_read_ATR)
+        optionmenu.add_command(label="Read card", command=self.on_read_card)
         optionmenu.add_command(label="Excellence", command=self.on_excellence)
 
         #  Help Menu -------- --------

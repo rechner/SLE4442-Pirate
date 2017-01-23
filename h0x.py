@@ -4,7 +4,7 @@ import imp
 import sys
 import Tkinter
 import ttk
-import tkFileDialog
+import tkMessageBox
 
 #from Module.LogViewer.LogView import *
 #from TKGui.HexViewer import *
@@ -14,6 +14,8 @@ from asciiview import ASCIIViewControl
 from dataset import Dataset
 from dispatcher import dispatcher, DEvent
 from h0xview import H0xView
+
+import readcard
 
 
 class App():
@@ -36,6 +38,8 @@ class App():
         dispatcher.add_event_listener("CONTROL_INSERT", self.open)
         dispatcher.add_event_listener("CONTROL_HELP", self.open)
         dispatcher.add_event_listener("CONTROL_ABOUT", self.open)
+        dispatcher.add_event_listener("READ_CARD", self.read_card)
+        dispatcher.add_event_listener("READ_ATR", self.read_ATR)
         #self.root.resizable(True, False)
 
         #self.tabControl = ttk.Notebook(self.root)
@@ -62,6 +66,8 @@ class App():
 
         self.update_clock()
 
+        self.pirate = readcard.get_device()
+
         try:
             self.view.root.mainloop()
         except KeyboardInterrupt:
@@ -75,7 +81,28 @@ class App():
         #    module.update()
 
     def quit(self, *args):
+        self.pirate.iostream.close()
         sys.exit()
+
+    def read_ATR(self, event):
+        atr = readcard.get_atr(self.pirate)
+        tkMessageBox.showinfo("ATR", " ".join(atr))
+
+    def read_card(self, event):
+        hex_data = readcard.read_card(self.pirate)
+        byte_data = readcard.hex_to_bytes(hex_data)
+
+        print(hex_data)
+
+        if len(hex_data) == 0:
+            tkMessageBox.showerror("Card Read Error", "Error while reading card: parse error or no data returned")
+            return
+
+        self.dataset = Dataset(byte_data)
+
+        evt = DEvent("LOAD_DATASET", {"dataset": self.dataset})
+        dispatcher.dispatch_event(evt)
+
 
     def open(self, event):
         filename = event.data['filename']
