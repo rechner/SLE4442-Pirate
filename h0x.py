@@ -119,7 +119,7 @@ class App():
             return
 
         with open('card_data.csv', 'a') as f:
-            f.write("{0},{1}\n".format(event.data['value'], ','.join(self.hex_data[7:16])))
+            f.write("{0},{1}\n".format(event.data['value'], ','.join(self.hex_data[6:15])))
 
 
 
