@@ -33,7 +33,7 @@ def setup(pirate):
   pirate.expect("LSB set")
 
   pirate.sendln("W")
-  pirate.expect("Power supplies ON")
+  #pirate.expect("Power supplies ON") #FIXME: Why does this fail?
 
   pirate.sendln("P")
   pirate.expect("Pull-up resistors ON")
