@@ -98,6 +98,7 @@ class App():
         tkMessageBox.showinfo("ATR", " ".join(atr))
 
     def read_card(self, event):
+        readcard.get_atr(self.pirate)
         hex_data = readcard.read_card(self.pirate)
         self.hex_data = hex_data
         byte_data = readcard.hex_to_bytes(hex_data)
