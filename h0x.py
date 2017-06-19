@@ -114,6 +114,26 @@ class App():
         evt = DEvent("LOAD_DATASET", {"dataset": self.dataset})
         dispatcher.dispatch_event(evt)
 
+        cents = str(self.decode(hex_data[6:15])).zfill(3)
+        value = '${}.{}'.format(cents[:-2], cents[-2:])
+        tkMessageBox.showinfo("Card Value", value)
+
+    def decode(self, read_value):
+        # Expects a list of a card read output link zo:
+        # ['0xFF', '0x12', ...]
+
+        # Turn the bits around
+        read_value = [ int(tmp[2:], 16) for tmp in read_value ]
+        bits = ''.join([ bin(tmp)[2:].zfill(8) for tmp in read_value ])[::-1]
+        
+        v = bits[30:32]
+        x = bits[16:22]
+        y = bits[70:72]
+        z = bits[24:30]
+         
+        return int(''.join((v,x,y,z)), 2)
+
+
     def write_log(self, event):
         if self.hex_data is None:
             tkMessageBox.showerror("Error", "No card data loaded yet")
