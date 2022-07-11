@@ -2,9 +2,9 @@
 
 import imp
 import sys
-import Tkinter
-import ttk
-import tkMessageBox
+import tkinter
+import tkinter.ttk
+import tkinter.messagebox
 
 #from Module.LogViewer.LogView import *
 #from TKGui.HexViewer import *
@@ -95,7 +95,7 @@ class App():
 
     def read_ATR(self, event):
         atr = readcard.get_atr(self.pirate)
-        tkMessageBox.showinfo("ATR", " ".join(atr))
+        tkinter.messagebox.showinfo("ATR", " ".join(atr))
 
     def read_card(self, event):
         readcard.get_atr(self.pirate)
@@ -106,7 +106,7 @@ class App():
         print(hex_data)
 
         if len(hex_data) == 0:
-            tkMessageBox.showerror("Card Read Error", "Error while reading card: parse error or no data returned")
+            tkinter.messagebox.showerror("Card Read Error", "Error while reading card: parse error or no data returned")
             return
 
         self.dataset = Dataset(byte_data)
@@ -116,7 +116,7 @@ class App():
 
         cents = str(self.decode(hex_data[6:15])).zfill(3)
         value = '${}.{}'.format(cents[:-2], cents[-2:])
-        tkMessageBox.showinfo("Card Value", value)
+        tkinter.messagebox.showinfo("Card Value", value)
 
     def decode(self, read_value):
         # Expects a list of a card read output link zo:
@@ -136,7 +136,7 @@ class App():
 
     def write_log(self, event):
         if self.hex_data is None:
-            tkMessageBox.showerror("Error", "No card data loaded yet")
+            tkinter.messagebox.showerror("Error", "No card data loaded yet")
             return
 
         with open('card_data.csv', 'a') as f:
@@ -162,7 +162,7 @@ class App():
             file.write(self.dataset.data)
             file.close()
         except Exception as e:
-            print("FAILED TO SAVE: %s" % (e))
+            print(("FAILED TO SAVE: %s" % (e)))
             raise
 
     def undo(self, event):

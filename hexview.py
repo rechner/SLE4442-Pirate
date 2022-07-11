@@ -1,4 +1,4 @@
-from Tkinter import *   # basic Tkinter
+from tkinter import *   # basic Tkinter
 #from tkFont import *
 from dispatcher import dispatcher, DEvent
 import re
@@ -192,7 +192,7 @@ class HexViewer(Frame):
         elif self.current_select_type == SELECT_HEX:
             offset = self.current_selection_off
             if event.keysym not in ASCII_HEX:
-                print "non ascii char entered"
+                print("non ascii char entered")
                 return
             evali = 0
             evalmsk = 0
@@ -205,7 +205,7 @@ class HexViewer(Frame):
                 self.hex_input_byte = self.hex_input_byte | int(event.keysym, 16)
                 ins = bytearray(1)
                 ins[0] = self.hex_input_byte
-                print("INSERT:", bytearray(self.hex_input_byte), len(bytearray(self.hex_input_byte)))
+                print(("INSERT:", bytearray(self.hex_input_byte), len(bytearray(self.hex_input_byte))))
                 self.dataset.insert(offset, ins)
                 #evalmsk = int('F0', 16)
                 self.set_selected(self.current_selection_off + 1, 1, self.current_select_type)
@@ -240,9 +240,9 @@ class ASCIIText(Text):
 
     def copy(self, evt):
         content = self.selection_get()
-        print("CCOOPPYY", content)
-        print "selected text: '%s'" % self.get(SEL_FIRST, SEL_LAST)
-        print "three", self.index(SEL_FIRST), self.index(SEL_LAST)
+        print(("CCOOPPYY", content))
+        print("selected text: '%s'" % self.get(SEL_FIRST, SEL_LAST))
+        print("three", self.index(SEL_FIRST), self.index(SEL_LAST))
         return "break"
 
     def cut(self, evt):
@@ -351,7 +351,7 @@ class ASCIIText(Text):
         """ Callback on a key press event.
         """
         #offset = self.current_select
-        print("ascii keypress:", event.keysym)
+        print(("ascii keypress:", event.keysym))
         self.master.on_keypress(event)
 
 
@@ -478,7 +478,7 @@ class HexText(Text):
         """ Callback on a key press event.
         """
         #offset = self.current_select
-        print("hex keypress:", event.keysym)
+        print(("hex keypress:", event.keysym))
         self.master.on_keypress(event)
 
         # move selected to next character

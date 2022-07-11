@@ -1,10 +1,10 @@
 
 import imp
 import sys
-import Tkinter
-import ttk
-import tkFileDialog
-import tkSimpleDialog
+import tkinter
+import tkinter.ttk
+import tkinter.filedialog
+import tkinter.simpledialog
 
 #from Module.LogViewer.LogView import *
 #from TKGui.HexViewer import *
@@ -16,7 +16,7 @@ from dispatcher import dispatcher, DEvent
 
 class H0xView(object):
     def __init__(self):
-        self.root = Tkinter.Tk()
+        self.root = tkinter.Tk()
         self.root.protocol("WM_DELETE_WINDOW", self.on_exit)
         self.root.title("h0x")
         self.initialise_window()
@@ -33,7 +33,7 @@ class H0xView(object):
         options['initialfile'] = configManager.get_config("INITIAL_FILE", 'myfile.hex')
         options['parent'] = self.root
         options['title'] = 'Open'
-        filename = tkFileDialog.askopenfilename(**file_opt)
+        filename = tkinter.filedialog.askopenfilename(**file_opt)
 
         # If no file selected
         if filename == "":
@@ -57,7 +57,7 @@ class H0xView(object):
         options['initialfile'] = configManager.get_config("INITIAL_FILE", 'myfile.hex')
         options['parent'] = self.root
         options['title'] = 'Save'
-        filename = tkFileDialog.asksaveasfilename(**file_opt)
+        filename = tkinter.filedialog.asksaveasfilename(**file_opt)
 
         # If no file selected
         if filename == "":
@@ -67,7 +67,7 @@ class H0xView(object):
         dispatcher.dispatch_event(evt)
 
     def on_log_write(self):
-        dollar_value = tkSimpleDialog.askfloat("Save card value", "Enter dollar value for this card", minvalue=0)
+        dollar_value = tkinter.simpledialog.askfloat("Save card value", "Enter dollar value for this card", minvalue=0)
         if dollar_value is None:
             return
         evt = DEvent("LOG_WRITE", {"value":dollar_value})
@@ -130,11 +130,11 @@ class H0xView(object):
         dispatcher.dispatch_event(evt)
 
     def initialise_window(self):
-        menu = Tkinter.Menu(self.root)
+        menu = tkinter.Menu(self.root)
         self.root.config(menu=menu)
 
         #  File Menu -------- --------
-        filemenu = Tkinter.Menu(menu)
+        filemenu = tkinter.Menu(menu)
         menu.add_cascade(label="File", menu=filemenu)
         filemenu.add_command(label="New", command=self.on_new)
         filemenu.add_command(label="Open", command=self.on_open)
@@ -146,7 +146,7 @@ class H0xView(object):
         filemenu.add_command(label="Exit", command=self.on_exit)
 
         #  Edit Menu -------- --------
-        editmenu = Tkinter.Menu(menu)
+        editmenu = tkinter.Menu(menu)
         menu.add_cascade(label="Edit", menu=editmenu)
         editmenu.add_command(label="Undo", command=self.on_undo)
         editmenu.add_command(label="Redo", command=self.on_redo)
@@ -162,20 +162,20 @@ class H0xView(object):
         editmenu.add_command(label="Select all", command=self.on_selectall)
 
         #  Options Menu -------- --------
-        optionmenu = Tkinter.Menu(menu)
+        optionmenu = tkinter.Menu(menu)
         menu.add_cascade(label="Card Actions", menu=optionmenu)
         optionmenu.add_command(label="Get ATR", command=self.on_read_ATR)
         optionmenu.add_command(label="Read card", command=self.on_read_card)
         optionmenu.add_command(label="Excellence", command=self.on_excellence)
 
         #  Help Menu -------- --------
-        helpmenu = Tkinter.Menu(menu)
+        helpmenu = tkinter.Menu(menu)
         menu.add_cascade(label="Help", menu=helpmenu)
         helpmenu.add_command(label="View help", command=self.on_help)
         helpmenu.add_command(label="About", command=self.on_about)
 
         # Notebook (tabs) -------- --------
-        self.nb = ttk.Notebook(self.root)
+        self.nb = tkinter.ttk.Notebook(self.root)
         #page1 = ttk.Frame(nb)
 
 

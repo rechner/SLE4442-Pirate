@@ -1,4 +1,4 @@
-from Tkinter import *   # basic Tkinter
+from tkinter import *   # basic Tkinter
 #from tkFont import *
 from dispatcher import dispatcher, DEvent
 import re
@@ -88,9 +88,9 @@ class ASCIIText(Text):
 
     def copy(self, evt):
         content = self.selection_get()
-        print("CCOOPPYY", content)
-        print "selected text: '%s'" % self.get(SEL_FIRST, SEL_LAST)
-        print "three", self.index(SEL_FIRST), self.index(SEL_LAST)
+        print(("CCOOPPYY", content))
+        print("selected text: '%s'" % self.get(SEL_FIRST, SEL_LAST))
+        print("three", self.index(SEL_FIRST), self.index(SEL_LAST))
         return "break"
 
     def cut(self, evt):

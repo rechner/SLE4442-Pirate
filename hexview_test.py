@@ -1,12 +1,12 @@
 from dataset import Dataset
 import unittest
-import Tkinter
+import tkinter
 from hexview import HexViewer
 
 
 class TestDataset(unittest.TestCase):
     def setUp(self):
-        self.root = Tkinter.Tk()
+        self.root = tkinter.Tk()
         self.hexview = HexViewer(master=self.root)
         self.root.pac
 
