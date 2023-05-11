@@ -133,7 +133,7 @@ if __name__ == '__main__':
       setup(pirate)
 
     while True:
-      a = raw_input("Press enter to read card, or anything else to quit > ")
+      a = input("Press enter to read card, or anything else to quit > ")
       if a != '':
         ser.close()
         exit()

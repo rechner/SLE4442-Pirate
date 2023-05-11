@@ -27,7 +27,7 @@ class EventDispatcher(object):
 
     def has_listener(self, event_type, listener):
         # Check for event type and for the listener
-        if event_type in self._events.keys():
+        if event_type in list(self._events.keys()):
             return listener in self._events[event_type]
         else:
             return False
@@ -35,7 +35,7 @@ class EventDispatcher(object):
     def dispatch_event(self, event):
         # Dispatch the event to all the associated listeners
         logging.info("event dispatch: %s" % event.type)
-        if event.type in self._events.keys():
+        if event.type in list(self._events.keys()):
             listeners = self._events[event.type]
             # print "event %s to listeners %s" % (str(event.type), str(listeners))
             for listener in listeners:
